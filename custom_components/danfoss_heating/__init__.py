@@ -8,9 +8,7 @@ from .const import DOMAIN
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Danfoss Heating from a config entry."""
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "climate")
-    )
+    await hass.config_entries.async_forward_entry_setups(entry, ["climate"])
     return True
 
 
