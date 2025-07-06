@@ -2,7 +2,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
-from .const import DOMAIN, DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM, CONF_PEER_ID, CONF_DEVICE_TYPE, CONF_ROOM_NUMBER
+from .const import DOMAIN, DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM, CONF_PEER_ID, CONF_DEVICE_TYPE, CONF_ROOM_NUMBER, CONF_HOST
 
 class DanfossConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Danfoss Heating."""
@@ -21,6 +21,7 @@ class DanfossConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
             
         data_schema = vol.Schema({
+            vol.Required(CONF_HOST): str,
             vol.Required(CONF_PEER_ID): str,
             vol.Required(CONF_DEVICE_TYPE, default=DEVICE_TYPE_DEVISMART): vol.In([DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM]),
             vol.Optional(CONF_ROOM_NUMBER): cv.positive_int,

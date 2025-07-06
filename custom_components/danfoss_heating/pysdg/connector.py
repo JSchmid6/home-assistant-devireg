@@ -7,7 +7,7 @@ from .dominion import Packet, PROTOCOL_NAME
 _LOGGER = logging.getLogger(__name__)
 
 class SDGPeerConnector:
-    def __init__(self, peer_id, host='192.168.1.100', port=80):
+    def __init__(self, peer_id, host, port=80):
         self.peer_id = peer_id
         self.host = host
         self.port = port
