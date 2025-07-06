@@ -1,4 +1,5 @@
 import logging
+import asyncio
 from homeassistant.components.climate import ClimateEntity, ClimateEntityFeature, HVACMode
 from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from .const import (
@@ -8,6 +9,7 @@ from .const import (
     CONF_PEER_ID,
     CONF_ROOM_NUMBER
 )
+from .pysdg import SDGPeerConnector, DeviReg, IconRoom
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -23,17 +25,37 @@ PRESET_MODES = {
     "antifreeze": "Frost Protection"
 }
 
+async def async_setup_entry(hass, config_entry, async_add_entities):
+    """Set up the Danfoss climate entities."""
+    peer_id = config_entry.data[CONF_PEER_ID]
+    device_type = config_entry.data.get("device_type", DEVICE_TYPE_DEVISMART)
+    
+    connector = SDGPeerConnector(peer_id)
+    await connector.connect()
+    
+    entities = []
+    if connector.is_connected:
+        if device_type == DEVICE_TYPE_DEVISMART:
+            devismart_device = DeviReg(connector)
+            entities.append(DanfossClimate(hass, config_entry, "DeviSmart Thermostat", devismart_device))
+        elif device_type == DEVICE_TYPE_ICON_ROOM:
+            # In a real implementation, we would discover the rooms.
+            # For now, we'll create a single room.
+            room_number = config_entry.data.get(CONF_ROOM_NUMBER, 1)
+            icon_room_device = IconRoom(connector, room_number)
+            entities.append(DanfossClimate(hass, config_entry, f"Icon Room {room_number}", icon_room_device))
+            
+    async_add_entities(entities, True)
+
 class DanfossClimate(ClimateEntity):
     """Representation of a Danfoss Heating climate entity."""
     
-    def __init__(self, hass, config_entry, name, device_type, peer_id, room_number=None):
+    def __init__(self, hass, config_entry, name, device):
         """Initialize the climate entity."""
         self._hass = hass
         self._config_entry = config_entry
         self._name = name
-        self._device_type = device_type
-        self._peer_id = peer_id
-        self._room_number = room_number
+        self._device = device
         
         # Default values
         self._current_temp = None
@@ -47,7 +69,7 @@ class DanfossClimate(ClimateEntity):
     @property
     def unique_id(self):
         """Return a unique ID for this entity."""
-        return f"{self._peer_id}_{self._room_number}" if self._room_number else self._peer_id
+        return self._device.get_peer_id()
         
     @property
     def name(self):
@@ -101,11 +123,8 @@ class DanfossClimate(ClimateEntity):
             "floor_temperature": self._floor_temp,
             "window_open": self._window_open,
             "heating_on": self._heating_on,
-            "device_type": self._device_type,
-            "peer_id": self._peer_id
+            "peer_id": self._device.get_peer_id()
         }
-        if self._room_number:
-            attrs["room_number"] = self._room_number
         return attrs
         
     async def async_set_temperature(self, **kwargs):
@@ -114,36 +133,29 @@ class DanfossClimate(ClimateEntity):
         if temp is None:
             return
             
-        # In a real implementation, this would send the temperature to the device
         _LOGGER.info("Setting temperature for %s to %s", self.name, temp)
-        self._target_temp = temp
-        self.async_write_ha_state()
+        await self._device.set_temperature(temp)
         
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new hvac mode."""
-        # In a real implementation, this would control the device
         _LOGGER.info("Setting HVAC mode for %s to %s", self.name, hvac_mode)
-        
-        # Convert string to HVACMode enum if needed
-        if isinstance(hvac_mode, str):
-            hvac_mode = HVACMode(hvac_mode)
-            
-        self._hvac_mode = hvac_mode
-        self.async_write_ha_state()
+        # This needs to be implemented in the device classes
         
     async def async_set_preset_mode(self, preset_mode):
         """Set new preset mode."""
-        # In a real implementation, this would control the device
         _LOGGER.info("Setting preset mode for %s to %s", self.name, preset_mode)
-        self._preset_mode = preset_mode
-        self.async_write_ha_state()
+        # This needs to be implemented in the device classes
         
     async def async_update(self):
         """Fetch new state data for the sensor."""
-        # In a real implementation, this would query the device
-        # For now, we'll just set some dummy values
-        self._current_temp = 22.0
-        self._floor_temp = 24.0
-        self._target_temp = 21.5
-        self._window_open = False
-        self._heating_on = True
+        await self._device.update()
+        self._current_temp = self._device.get_current_temperature()
+        self._target_temp = self._device.get_target_temperature()
+        
+        if isinstance(self._device, DeviReg):
+            self._floor_temp = self._device.get_floor_temperature()
+            self._window_open = self._device.get_window_open()
+            self._heating_on = self._device.get_heating_on()
+            
+        self._hvac_mode = self._device.get_hvac_mode()
+        self._preset_mode = self._device.get_preset_mode()

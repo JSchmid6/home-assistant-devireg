@@ -2,35 +2,28 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
-from .const import DOMAIN
-
-CONF_USERNAME = "username"
-CONF_PRIVATE_KEY = "private_key"
-CONF_PUBLIC_KEY = "public_key"
-
-DEFAULT_USERNAME = "HomeAssistant"
+from .const import DOMAIN, DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM, CONF_PEER_ID, CONF_DEVICE_TYPE, CONF_ROOM_NUMBER
 
 class DanfossConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Danfoss Heating."""
     
     VERSION = 1
-    CONNECTION_CLASS = config_entries.CONN_CLASS_CLOUD_POLL
+    CONNECTION_CLASS = config_entries.CONN_CLASS_LOCAL_POLL
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
         errors = {}
         
         if user_input is not None:
-            # Validate input here (in real implementation would validate keys)
             return self.async_create_entry(
-                title=f"Danfoss Heating - {user_input[CONF_USERNAME]}",
+                title=f"Danfoss {user_input[CONF_DEVICE_TYPE]}",
                 data=user_input
             )
             
         data_schema = vol.Schema({
-            vol.Required(CONF_USERNAME, default=DEFAULT_USERNAME): str,
-            vol.Required(CONF_PRIVATE_KEY): str,
-            vol.Required(CONF_PUBLIC_KEY): str,
+            vol.Required(CONF_PEER_ID): str,
+            vol.Required(CONF_DEVICE_TYPE, default=DEVICE_TYPE_DEVISMART): vol.In([DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM]),
+            vol.Optional(CONF_ROOM_NUMBER): cv.positive_int,
         })
         
         return self.async_show_form(
