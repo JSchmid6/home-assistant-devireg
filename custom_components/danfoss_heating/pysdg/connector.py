@@ -35,7 +35,9 @@ class SDGPeerConnector:
             return
 
         try:
-            self.writer.write(packet.serialize())
+            data = packet.serialize()
+            _LOGGER.debug("Sending packet: %s", data.hex())
+            self.writer.write(data)
             await self.writer.drain()
         except ConnectionResetError as e:
             _LOGGER.error("Connection lost: %s", e)
@@ -58,7 +60,9 @@ class SDGPeerConnector:
             payload = await self.reader.readexactly(payload_len)
             
             # Deserialize the full packet
-            return Packet.deserialize(prefix + header + payload)
+            full_packet = prefix + header + payload
+            _LOGGER.debug("Received packet: %s", full_packet.hex())
+            return Packet.deserialize(full_packet)
             
         except (asyncio.IncompleteReadError, ConnectionResetError) as e:
             _LOGGER.error("Failed to receive packet: %s", e)

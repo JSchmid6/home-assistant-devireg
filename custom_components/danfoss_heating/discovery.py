@@ -19,11 +19,23 @@ class DanfossDiscovery:
         
         _LOGGER.info("Starting Danfoss discovery with OTP: %s", otp)
         
-        # For now, we'll return a dummy device for testing purposes.
+        # For now, we'll return a list of dummy devices for testing purposes.
+        # This simulates a successful discovery of multiple devices.
         return [
             {
                 "peer_id": "00:11:22:33:44:55",
                 "device_type": "DeviSmart",
                 "name": "Living Room Thermostat"
+            },
+            {
+                "peer_id": "00:11:22:33:44:56",
+                "device_type": "DeviSmart",
+                "name": "Bedroom Thermostat"
+            },
+            {
+                "peer_id": "00:11:22:33:44:57",
+                "device_type": "IconRoom",
+                "name": "Bathroom Thermostat",
+                "room_number": 1
             }
         ]

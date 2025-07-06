@@ -1,9 +1,12 @@
 import voluptuous as vol
+import logging
 from homeassistant import config_entries
 from homeassistant.core import callback
 import homeassistant.helpers.config_validation as cv
-from .const import DOMAIN, CONF_PEER_ID, CONF_DEVICE_TYPE, CONF_ROOM_NUMBER, CONF_HOST
-from .discovery import DanfossDiscovery
+from .const import DOMAIN
+from .web_server import DanfossWebServer
+
+_LOGGER = logging.getLogger(__name__)
 
 class DanfossConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Danfoss Heating."""
@@ -13,48 +16,49 @@ class DanfossConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     def __init__(self):
         """Initialize the config flow."""
+        self.web_server = None
         self.discovered_devices = []
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
-        return await self.async_step_discover()
+        _LOGGER.debug("Starting config flow")
+        if not self.web_server:
+            self.web_server = DanfossWebServer(self.hass)
+            self.web_server.start()
 
-    async def async_step_discover(self, user_input=None):
-        """Handle the discovery step."""
-        errors = {}
-        
-        if user_input is not None:
-            discovery = DanfossDiscovery(self.hass)
-            self.discovered_devices = await discovery.discover_devices(user_input["otp"])
-            
-            if self.discovered_devices:
-                return await self.async_step_select()
-            else:
-                errors["base"] = "no_devices_found"
-                
-        data_schema = vol.Schema({
-            vol.Required("otp"): str,
-        })
-        
         return self.async_show_form(
-            step_id="discover",
-            data_schema=data_schema,
-            errors=errors
+            step_id="user",
+            description_placeholders={
+                "url": f"http://{self.hass.config.api.host}:8080/custom_components/danfoss_heating/configreceiver.html"
+            }
         )
+
+    async def async_step_discovery_complete(self, user_input=None):
+        """Handle the discovery complete step."""
+        _LOGGER.debug("Discovery complete")
+        if self.web_server:
+            self.web_server.stop()
+            self.web_server = None
+            
+        # In a real implementation, the web server would have populated
+        # self.discovered_devices. For now, we'll assume it has.
+        
+        return await self.async_step_select()
 
     async def async_step_select(self, user_input=None):
         """Handle the device selection step."""
         errors = {}
         
         if user_input is not None:
+            _LOGGER.debug("User selected device: %s", user_input["device"])
             # Find the selected device
             device = next((d for d in self.discovered_devices if d["name"] == user_input["device"]), None)
             
             if device:
-                # In a real implementation, we would also get the host from discovery
-                device[CONF_HOST] = "192.168.1.1" # Placeholder
+                _LOGGER.debug("Creating config entry for device: %s", device)
                 return self.async_create_entry(title=device["name"], data=device)
             else:
+                _LOGGER.error("Device not found: %s", user_input["device"])
                 errors["base"] = "device_not_found"
 
         device_names = [d["name"] for d in self.discovered_devices]

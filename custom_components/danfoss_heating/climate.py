@@ -27,25 +27,9 @@ PRESET_MODES = {
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Danfoss climate entities."""
-    peer_id = config_entry.data[CONF_PEER_ID]
-    device_type = config_entry.data.get("device_type", DEVICE_TYPE_DEVISMART)
+    device = hass.data[DOMAIN][config_entry.entry_id]
     
-    connector = SDGPeerConnector(peer_id)
-    await connector.connect()
-    
-    entities = []
-    if connector.is_connected:
-        if device_type == DEVICE_TYPE_DEVISMART:
-            devismart_device = DeviReg(connector)
-            entities.append(DanfossClimate(hass, config_entry, "DeviSmart Thermostat", devismart_device))
-        elif device_type == DEVICE_TYPE_ICON_ROOM:
-            # In a real implementation, we would discover the rooms.
-            # For now, we'll create a single room.
-            room_number = config_entry.data.get(CONF_ROOM_NUMBER, 1)
-            icon_room_device = IconRoom(connector, room_number)
-            entities.append(DanfossClimate(hass, config_entry, f"Icon Room {room_number}", icon_room_device))
-            
-    async_add_entities(entities, True)
+    async_add_entities([DanfossClimate(hass, config_entry, device.name, device)], True)
 
 class DanfossClimate(ClimateEntity):
     """Representation of a Danfoss Heating climate entity."""
@@ -133,17 +117,17 @@ class DanfossClimate(ClimateEntity):
         if temp is None:
             return
             
-        _LOGGER.info("Setting temperature for %s to %s", self.name, temp)
+        _LOGGER.debug("Setting temperature for %s to %s", self.name, temp)
         await self._device.set_temperature(temp)
         
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new hvac mode."""
-        _LOGGER.info("Setting HVAC mode for %s to %s", self.name, hvac_mode)
+        _LOGGER.debug("Setting HVAC mode for %s to %s", self.name, hvac_mode)
         # This needs to be implemented in the device classes
         
     async def async_set_preset_mode(self, preset_mode):
         """Set new preset mode."""
-        _LOGGER.info("Setting preset mode for %s to %s", self.name, preset_mode)
+        _LOGGER.debug("Setting preset mode for %s to %s", self.name, preset_mode)
         # This needs to be implemented in the device classes
         
     async def async_update(self):
@@ -159,3 +143,4 @@ class DanfossClimate(ClimateEntity):
             
         self._hvac_mode = self._device.get_hvac_mode()
         self._preset_mode = self._device.get_preset_mode()
+        _LOGGER.debug("Updated climate entity: %s", self.name)

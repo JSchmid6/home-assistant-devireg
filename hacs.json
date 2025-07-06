@@ -4,5 +4,5 @@
   "homeassistant": "2025.6.0",
   "codeowners": ["@JSchmid6"],
   "iot_class": "local_polling",
-  "icon": "https://cdn.worldvectorlogo.com/logos/danfoss-2.svg"
+  "icon": "https://static.mybrand.zone/danfoss/logo-322621127.png"
 }

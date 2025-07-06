@@ -17,6 +17,7 @@ class DeviReg:
         self.control_mode = None
 
     async def set_temperature(self, temp):
+        _LOGGER.debug("Setting temperature for %s to %s", self.get_peer_id(), temp)
         # Example: setting comfort temperature
         packet = Packet.create_with_payload(
             msg_class=3,  # DOMINION_SCHEDULER
@@ -27,6 +28,7 @@ class DeviReg:
         await self.connector.send_packet(packet)
 
     async def update(self):
+        _LOGGER.debug("Updating device: %s", self.get_peer_id())
         # Request room temperature
         packet = Packet(
             msg_class=2,  # DOMINION_HEATING
@@ -37,6 +39,7 @@ class DeviReg:
         response = await self.connector.receive_packet()
         if response:
             self.current_temp = response.get_decimal()
+            _LOGGER.debug("Current temperature for %s: %s", self.get_peer_id(), self.current_temp)
 
         # Request control mode
         packet = Packet(
@@ -57,6 +60,7 @@ class DeviReg:
                 8: "Override"
             }
             self.control_mode = mode_map.get(response.get_byte())
+            _LOGGER.debug("Control mode for %s: %s", self.get_peer_id(), self.control_mode)
 
     def get_current_temperature(self):
         return self.current_temp
@@ -86,6 +90,7 @@ class DeviReg:
         return self.control_mode
 
     async def set_control_mode(self, mode):
+        _LOGGER.debug("Setting control mode for %s to %s", self.get_peer_id(), mode)
         # This is a simplified implementation. A real implementation would
         # need to handle the different mode transitions correctly, as shown
         # in the OpenHAB binding's setMode method.
@@ -118,6 +123,7 @@ class IconRoom:
         self.preset_mode = None
 
     async def set_temperature(self, temp):
+        _LOGGER.debug("Setting temperature for %s to %s", self.get_peer_id(), temp)
         # Example: setting comfort temperature
         packet = Packet.create_with_payload(
             msg_class=128 + self.room_number,  # ROOM_FIRST + roomNumber
@@ -128,6 +134,7 @@ class IconRoom:
         await self.connector.send_packet(packet)
 
     async def update(self):
+        _LOGGER.debug("Updating device: %s", self.get_peer_id())
         # Example: requesting room temperature
         packet = Packet(
             msg_class=128 + self.room_number,  # ROOM_FIRST + roomNumber
@@ -138,6 +145,7 @@ class IconRoom:
         response = await self.connector.receive_packet()
         if response:
             self.current_temp = response.get_decimal()
+            _LOGGER.debug("Current temperature for %s: %s", self.get_peer_id(), self.current_temp)
 
     def get_current_temperature(self):
         return self.current_temp

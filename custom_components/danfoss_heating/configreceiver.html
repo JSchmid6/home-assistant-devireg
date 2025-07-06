@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Danfoss Config Receiver</title>
+    <script>
+        function receiveConfig() {
+            const otp = new URLSearchParams(window.location.search).get('otp');
+            if (otp) {
+                fetch('/api/danfoss_heating/discover', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ otp: otp }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').innerText = 'Discovery complete. You can now close this window.';
+                })
+                .catch((error) => {
+                    document.getElementById('status').innerText = 'Error: ' + error;
+                });
+            } else {
+                document.getElementById('status').innerText = 'Waiting for configuration...';
+            }
+        }
+        window.onload = receiveConfig;
+    </script>
+</head>
+<body>
+    <h1>Danfoss Heating Configuration</h1>
+    <p id="status">Initializing...</p>
+</body>
+</html>
