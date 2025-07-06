@@ -33,6 +33,8 @@ class DanfossWebServer(threading.Thread):
 
     def run(self):
         handler = DanfossRequestHandler
+        # Allow the port to be reused immediately
+        socketserver.TCPServer.allow_reuse_address = True
         self.httpd = socketserver.TCPServer(("", self.port), handler)
         self.httpd.hass = self.hass # Pass hass to the request handler
         _LOGGER.info("Starting web server on port %s", self.port)
