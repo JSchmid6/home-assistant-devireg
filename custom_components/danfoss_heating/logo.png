@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en" class="mod modLayout">
+    <head>
+        <title>404 - Not Found - Frontify</title>
+        <!-- This product is built using third-party software, as described here: https://app.frontify.com/licenses.md -->
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="x-csrf-token" content="bd912e81f7e0ccf9256e4482752cc5dcb69355bd184a54fa4c5518f564b32416" /><meta name="v1-api-token" content="" />
+<link rel="stylesheet" type="text/css" href="https://cdn.frontify.com/css/frontify-common.1b6dcf84a50a9dcd.css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.frontify.com/css/frontify-workspace.d436327bbe286b38.css" />
+<style type="text/css" id="js-o-auth__style">
+  .o-auth__note {  border-radius: 4px;}.o-auth__submit {  border-radius: 2px;  background-color: rgb(226, 0, 15);  color: rgb(255, 255, 255);}.o-auth__submit:hover {  background-color: rgb(182, 0, 15);}.o-auth__submit:active {  background-color: rgb(182, 0, 15);}.o-auth__submit--oauth-and-saml {  border-radius: 2px;  background-color: rgb(87, 91, 91);  color: rgb(255, 255, 255);}.o-auth__error-message {  color: rgb(204, 44, 72);}.o-auth__submit--oauth-and-saml:hover {  background-color: rgb(182, 0, 15);}.o-auth__note {  color: rgb(182, 0, 15);  background-color: rgb(255, 255, 255);}@media (min-width: 480px) {  .o-auth, .skinLayoutRequestAccess {    background-image: url("https://media.ffycdn.net/eu/danfoss/dcZB6RhngrJHDvB76PYc.jpg?width={width}");  }}.o-auth, .skinLayoutRequestAccess {  background-size: cover;}.o-auth, .skinLayoutRequestAccess {  background-color: rgb(45, 50, 50);}@font-face {font-display: swap;font-family: "MyriadPro-Regular";src: url("/api/font-file/1051?format=ttf&project_id=2") format("truetype");font-weight: 400;font-style: normal;}.o-auth, .o-auth__email, .o-auth__password, .o-auth__submit, .o-auth__password-lost, .o-auth__go-to-login, .o-auth__toggle-external-login, .o-auth__submit--oauth-and-saml {font-family: "MyriadPro-Regular";}</style>
+
+
+  <link
+    rel="icon"
+    href="https://media.ffycdn.net/eu/danfoss/hEKQyE8YFi2gwKsP6GNo.png?width={width}&rect=0,0,351,351&reference_width=800"
+    type="image/png"
+  />
+    </head>
+    <body>
+        <main class="main-content">
+            <nav role="navigation" class="co-powerbar" aria-label="Powerbar">
+                <section class="co-powerbar__section js-co-powerbar__section--frontify">
+    <a
+        href="/dashboard"
+        class="co-powerbar__item js-co-powerbar__frontify co-powerbar__frontify"
+        aria-label="Dashboard">
+        <svg width="30" height="30" viewBox="0 0 53 50" fill="none" aria-hidden="true"
+             xmlns="http://www.w3.org/2000/svg">
+            <path d="M51.0248 33.1169L45.264 29.8701C44.7702 29.5455 44.441 29.0584 44.441 28.4091V21.9156C44.441 20.6169 43.7826 19.3182 42.4658 18.6688L36.705 15.4221C36.3758 15.2597 36.0466 14.6104 36.0466 14.1234V7.62987C36.0466 6.33117 35.3882 5.03247 34.0714 4.38312L26.6646 0L19.0932 4.38312C17.941 5.03247 17.118 6.33117 17.118 7.62987V14.1234C17.118 14.7727 16.7888 15.2597 16.295 15.5844L10.5342 18.8312C9.38199 19.4805 8.55901 20.7792 8.55901 22.0779V28.5714C8.55901 29.2208 8.22981 29.7078 7.73602 30.0325L1.97516 33.2792C0.822982 33.9286 0 35.2273 0 36.526V45.1299L7.57143 49.513C8.7236 50.1623 10.205 50.1623 11.3571 49.513L17.118 46.2662C17.6118 45.9416 18.2702 45.9416 18.764 46.2662L24.5248 49.513C25.1832 49.8377 25.8416 50 26.5 50C27.1584 50 27.8168 49.8377 28.4752 49.513L34.236 46.2662C34.7298 45.9416 35.3882 45.9416 35.882 46.2662L41.6429 49.513C42.795 50.1623 44.2764 50.1623 45.4286 49.513L53 45.1299V36.526C53 35.0649 52.3416 33.9286 51.0248 33.1169ZM33.9068 7.62987V14.1234C33.9068 15.4221 34.5652 16.7208 35.882 17.3701L41.6429 20.6169C42.1367 20.9416 42.4658 21.4286 42.4658 22.0779V28.5714C42.4658 29.8701 43.1242 31.1688 44.441 31.8182L50.2019 35.0649C50.6957 35.3896 51.0248 35.8766 51.0248 36.526V42.6948L27.8168 29.5455V3.24675L33.0839 6.16883C33.5776 6.49351 33.9068 6.98052 33.9068 7.62987ZM3.12733 35.0649L8.8882 31.8182C10.0404 31.1688 10.8634 29.8701 10.8634 28.5714V22.0779C10.8634 21.4286 11.1925 20.9416 11.6863 20.6169L17.4472 17.3701C18.5994 16.7208 19.4224 15.4221 19.4224 14.1234V7.62987C19.4224 6.98052 19.7516 6.49351 20.2453 6.16883L25.677 3.08442V29.3831L2.30435 42.6948V36.526C2.30435 35.8766 2.63354 35.3896 3.12733 35.0649ZM44.2764 47.5649C43.7826 47.8896 43.1242 47.8896 42.6304 47.5649L36.8696 44.3182C35.7174 43.6688 34.236 43.6688 33.0839 44.3182L27.323 47.5649C26.8292 47.8896 26.1708 47.8896 25.677 47.5649L19.9162 44.3182C18.764 43.6688 17.2826 43.6688 16.1304 44.3182L10.3696 47.5649C9.87578 47.8896 9.21739 47.8896 8.7236 47.5649L3.45652 44.4805L26.6646 31.3312L49.8727 44.4805L44.2764 47.5649Z" fill="#2D3232"/>
+        </svg>
+    </a>
+</section>
+                <div class="co-powerbar__contextual js-co-powerbar__contextual"></div>
+            </nav>
+            <div class="co-powerbar__content">
+                <div class="mod mod-c-error404"></div>
+            </div>
+        </main>
+        <div class="mod mod-search o-search">
+    <div class="o-search__container js-o-search__container">
+        <header class="o-search__header">
+            <a href="javascript:;" class="o-search__close js-o-search__close"><i class="ca-icon--reject ca-icon--md"></i></a>
+            <label class="o-search__search">
+                <i class="ca-icon--search ca-icon--lg o-search__search-icon"></i>
+                <input class="o-search__query js-o-search__query" type="text" placeholder="Search" />
+            </label>
+        </header>
+        <div class="o-search__results js-o-search__results"></div>
+    </div>
+</div>
+<div class="mod mod-uploader o-uploader" data-test-id="uploader">
+    <input class="o-uploader__fileupload js-o-uploader__fileupload" type="file" aria-hidden="true" name="files[]" multiple tabindex="-1">
+    <div class="o-uploader__preview js-o-uploader__preview" data-test-id="uploader-preview"></div>
+    <div class="o-uploader__details js-o-uploader__details"></div>
+</div>
+
+<div class="mod mod-c-downloader co-downloader js-co-downloader"></div>
+
+<div class="cm-modal__overlay js-cm-modal__overlay"></div>
+<div class="mod mod-c-modal cm-modal js-cm-modal" data-modal-id="modal">
+    <a
+        href="javascript:;"
+        class="cm-modal__close js-cm-modal__close"
+        title="Close"
+        aria-label="Close">
+        <i class="ca-icon--reject ca-icon--md"></i>
+    </a>
+    <div class="cm-modal__content js-cm-modal__content"></div>
+</div>
+
+<div class="mod mod-c-swal"></div><div class="mod mod-c-payment co-payment clearfix"></div>
+
+<div class="mod mod-email-change-request"></div>
+
+<script type="text/javascript">
+    window.currentLanguage = "" || window.currentLanguage;
+
+    window.__frontify_do_not_use_or_you_will_be_fired = {
+        context: {"authenticated":false},
+    };
+
+    window.APPLICATION_CONFIG = {
+        version: "web-app-2025-07-04T15-39-38Z-9fcb47b1",
+        locales: {"de.json":"https:\/\/cdn.frontify.com\/locales\/de.6e926d6ad177c0fc.json","en.json":"https:\/\/cdn.frontify.com\/locales\/en.dc60a038cfe027d6.json","fr.json":"https:\/\/cdn.frontify.com\/locales\/fr.fe383da6ee5fd6a3.json"},
+        sentryClientDsn: "https://07efd26759d575d252eb3fb4f5539d3d@sentryapp.appsupport.frontify.dev/51",
+        thirdParty: {
+            amplitude: {
+                enabled: true,
+                amplitudeId: "ebff31b9da313efd071a193786671111",
+                region: "EU",
+                accountId: 4001124,
+                enterpriseEnabled: true,
+                enterpriseId: 4001124,
+                plan: "ENTERPRISE",
+                isPaid: true,
+                isTrial: false,
+                user: {
+                    id: null,
+                    creator: null,
+                    signUpDate: null,
+                    referer: null,
+                    landing: null,
+                },
+            },
+            intercom: {
+                enabled: false,
+                settings: null,
+            },
+            pusher: {
+                enabled: false,
+                key: "8291b93ff3bdd9db0cf3",
+                cluster: "eu",
+                projectIds: [],
+            },
+            segment: {
+                enabled: false, // Only enabled on Guidelines
+            },
+            sentry: {
+                enabled: true,
+                dsn: "https://07efd26759d575d252eb3fb4f5539d3d@sentryapp.appsupport.frontify.dev/51",
+            },
+        },
+    };
+</script>
+<script type="text/javascript" src="https://cdn.frontify.com/js/frontify-react-vendors-production.6f3f4d41eb81c6a8.js"></script>
+<script type="text/javascript" src="https://cdn.frontify.com/js/frontify-runtime.aec22925e25baf33.js"></script>
+<script type="text/javascript" src="https://cdn.frontify.com/js/frontify-vendors.2b5d097d9896f03c.js"></script>
+<script type="text/javascript" src="https://cdn.frontify.com/js/frontify-common.e421f8a05ac01297.js"></script>
+<script type="text/javascript" src="https://cdn.frontify.com/js/frontify-workspace.fba72ab1e9032f20.js"></script>
+<script type="text/javascript" src="https://cdn.frontify.com/js/frontify-bootstrap.f48a3bfef1493f60.js"></script>
+
+    </body>
+</html>
