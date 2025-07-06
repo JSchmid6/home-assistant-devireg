@@ -54,7 +54,7 @@ If devices don't appear:
 4. Check Home Assistant logs for errors
 
 ## Support
-For issues or feature requests, please open an issue on [GitHub](https://github.com/Sonic-Amiga/org.openhab.binding.devireg)
+For issues or feature requests, please open an issue on [GitHub](https://github.com/JSchmid6/home-assistant-devireg)
 
 ## License
 This integration is licensed under the Eclipse Public License 2.0
