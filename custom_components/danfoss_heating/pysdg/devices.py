@@ -14,6 +14,7 @@ class DeviReg:
         self.preset_mode = None
         self.window_open = None
         self.heating_on = None
+        self.control_mode = None
 
     async def set_temperature(self, temp):
         # Example: setting comfort temperature
@@ -26,7 +27,7 @@ class DeviReg:
         await self.connector.send_packet(packet)
 
     async def update(self):
-        # Example: requesting room temperature
+        # Request room temperature
         packet = Packet(
             msg_class=2,  # DOMINION_HEATING
             msg_code=2    # HEATING_TEMPERATURE_ROOM
@@ -36,6 +37,26 @@ class DeviReg:
         response = await self.connector.receive_packet()
         if response:
             self.current_temp = response.get_decimal()
+
+        # Request control mode
+        packet = Packet(
+            msg_class=3,  # DOMINION_SCHEDULER
+            msg_code=1    # SCHEDULER_CONTROL_INFO
+        )
+        await self.connector.send_packet(packet)
+
+        response = await self.connector.receive_packet()
+        if response:
+            mode_map = {
+                1: "Manual",
+                2: "Schedule",
+                3: "Schedule", # Away
+                4: "Vacation",
+                6: "Pause",
+                7: "Off",
+                8: "Override"
+            }
+            self.control_mode = mode_map.get(response.get_byte())
 
     def get_current_temperature(self):
         return self.current_temp
@@ -60,6 +81,32 @@ class DeviReg:
         
     def get_peer_id(self):
         return self.connector.peer_id
+
+    def get_control_mode(self):
+        return self.control_mode
+
+    async def set_control_mode(self, mode):
+        # This is a simplified implementation. A real implementation would
+        # need to handle the different mode transitions correctly, as shown
+        # in the OpenHAB binding's setMode method.
+        
+        mode_map = {
+            "Manual": 1,
+            "Schedule": 2,
+            "Vacation": 4,
+            "Pause": 6,
+            "Off": 7,
+            "Override": 8
+        }
+        
+        if mode in mode_map:
+            packet = Packet.create_with_payload(
+                msg_class=3,  # DOMINION_SCHEDULER
+                msg_code=1,   # SCHEDULER_CONTROL_MODE
+                data=mode_map[mode],
+                data_type='byte'
+            )
+            await self.connector.send_packet(packet)
 
 class IconRoom:
     def __init__(self, connector: SDGPeerConnector, room_number: int):

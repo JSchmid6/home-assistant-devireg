@@ -7,5 +7,6 @@
   "config_flow": true,
   "documentation": "https://github.com/JSchmid6/home-assistant-devireg/blob/master/README.md",
   "issue_tracker": "https://github.com/JSchmid6/home-assistant-devireg/issues",
-  "iot_class": "cloud_polling"
+  "iot_class": "local_polling",
+  "logo": "https://cdn.worldvectorlogo.com/logos/danfoss-2.svg"
 }

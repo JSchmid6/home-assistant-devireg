@@ -7,7 +7,7 @@ from homeassistant.core import HomeAssistant
 from .const import DOMAIN, CONF_PEER_ID, CONF_DEVICE_TYPE, DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM, CONF_ROOM_NUMBER, CONF_HOST
 from .pysdg import SDGPeerConnector, DeviReg, IconRoom
 
-PLATFORMS = ["climate", "sensor", "switch"]
+PLATFORMS = ["climate", "sensor", "switch", "select"]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Danfoss Heating from a config entry."""
