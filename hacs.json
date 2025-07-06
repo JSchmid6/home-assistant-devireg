@@ -4,5 +4,5 @@
   "homeassistant": "2025.6.0",
   "codeowners": ["@JSchmid6"],
   "iot_class": "local_polling",
-  "icon": "/local/danfoss_heating/logo.png"
+  "icon": "/api/danfoss_heating/logo.png"
 }

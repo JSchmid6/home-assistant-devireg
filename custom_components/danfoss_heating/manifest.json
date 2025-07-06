@@ -8,5 +8,5 @@
   "documentation": "https://github.com/JSchmid6/home-assistant-devireg/blob/master/README.md",
   "issue_tracker": "https://github.com/JSchmid6/home-assistant-devireg/issues",
   "iot_class": "local_polling",
-  "logo": "/local/danfoss_heating/logo.png"
+  "logo": "/api/danfoss_heating/logo.png"
 }

@@ -24,28 +24,26 @@ This integration allows you to control Danfoss heating devices through Home Assi
 3. Restart Home Assistant.
 
 ## Configuration
-This integration uses a discovery process to find your Danfoss devices. You will need to get a One-Time Password (OTP) from your Danfoss mobile app to start the discovery.
+**Important:** Before you begin, you must assign a static IP address (or a DHCP reservation) to your Danfoss device in your router's settings. This is required for the integration to work reliably.
 
-**Getting the OTP:**
-1. Open the Danfoss mobile app on your phone.
-2. Go to the settings for your home.
-3. Select "Add user" or "Share home".
-4. The app will generate a code (the OTP). This code is valid for a short time.
-
-**Adding the Integration:**
 1. Go to **Settings** → **Devices & Services**.
 2. Click **+ Add Integration**.
 3. Search for "Danfoss Heating".
-4. Enter the OTP you generated from the mobile app.
-5. The integration will discover your devices. Select the device you want to add from the list.
+4. Enter the required information for each device you want to add:
+   - **Host**: The static IP address of your Danfoss device.
+   - **Peer ID**: This is the MAC address of your Danfoss device. You can usually find this on a sticker on the device itself, or in your router's list of connected devices. It should be in the format `XX:XX:XX:XX:XX:XX`.
+   - **Device Type**: Select whether you are adding a `DeviSmart` or an `IconRoom` device.
+   - **Room Number** (for IconRoom only): If you are adding an `IconRoom` device, you must specify the room number.
+
+5. Click **Submit**.
 
 ## Usage
 After configuration, your thermostat will appear as a climate entity. You can control it through the Home Assistant UI or automations.
 
 ## Troubleshooting
-If your devices are not discovered:
-1.  **Check the OTP:** Ensure you have entered the correct OTP and that it has not expired.
-2.  **Check Network Connectivity:** Ensure that your Home Assistant instance and your phone are on the same network.
+If your device doesn't appear or is unavailable:
+1.  **Verify the Host and Peer ID:** Double-check that the static IP address and Peer ID (MAC address) are correct.
+2.  **Check Network Connectivity:** Ensure that your Home Assistant instance and the Danfoss device are on the same network.
 3.  **Check Home Assistant Logs:** Look for any errors related to the `danfoss_heating` integration in **Settings** → **System** → **Logs**.
 
 ## Support
