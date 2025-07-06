@@ -1,0 +1,24 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Danfoss Heating Discovery",
+                "description": "To discover your Danfoss devices, please open the following URL on your phone and follow the instructions to share your home configuration:\n\n[{url}]({url})\n\nAfter you have sent the configuration from your phone, click 'Submit' below to continue."
+            },
+            "select": {
+                "title": "Select Device",
+                "description": "Select the device you want to add.",
+                "data": {
+                    "device": "Device"
+                }
+            }
+        },
+        "error": {
+            "no_devices_found": "No devices were found. Please try again.",
+            "device_not_found": "The selected device was not found."
+        },
+        "abort": {
+            "already_configured": "This device is already configured."
+        }
+    }
+}

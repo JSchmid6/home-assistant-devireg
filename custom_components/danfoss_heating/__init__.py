@@ -4,9 +4,12 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import aiohttp_client
+from aiohttp import web
 
 from .const import DOMAIN, CONF_PEER_ID, CONF_DEVICE_TYPE, DEVICE_TYPE_DEVISMART, DEVICE_TYPE_ICON_ROOM, CONF_ROOM_NUMBER, CONF_HOST
 from .pysdg import SDGPeerConnector, DeviReg, IconRoom
+from .pairing import DanfossPairing
 
 PLATFORMS = ["climate", "sensor", "switch", "select"]
 
@@ -52,3 +55,29 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.data[DOMAIN].pop(entry.entry_id)
         
     return unload_ok
+
+async def async_setup(hass: HomeAssistant, config: dict):
+    """Set up the Danfoss Heating component."""
+    
+    async def handle_discover(request):
+        """Handle the discovery request."""
+        data = await request.json()
+        pairing = DanfossPairing(hass)
+        discovered_devices = await pairing.pair(data['otp'])
+        return web.json_response(discovered_devices)
+
+    hass.http.register_view(DanfossConfigView)
+    hass.http.register_json_view("/api/danfoss_heating/discover", handle_discover)
+    
+    return True
+
+class DanfossConfigView(web.View):
+    """View to handle the Danfoss configuration."""
+    
+    url = "/api/danfoss_heating/configreceiver.html"
+    name = "api:danfoss_heating:configreceiver"
+    requires_auth = False
+    
+    async def get(self, request):
+        """Handle the GET request."""
+        return web.FileResponse(hass.config.path("custom_components/danfoss_heating/configreceiver.html"))
