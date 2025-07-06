@@ -1,0 +1,12 @@
+{
+  "domain": "danfoss_heating",
+  "name": "Danfoss Heating Solutions",
+  "version": "1.0.0",
+  "requirements": ["pysdg==0.1.0"],
+  "dependencies": [],
+  "codeowners": ["@sonic-amiga"],
+  "config_flow": true,
+  "documentation": "https://github.com/Sonic-Amiga/org.openhab.binding.devireg/tree/main/home_assistant_integration",
+  "issue_tracker": "https://github.com/Sonic-Amiga/org.openhab.binding.devireg/issues",
+  "iot_class": "cloud_polling"
+}
