@@ -7,7 +7,10 @@ from .const import (
     DEVICE_TYPE_DEVISMART,
     DEVICE_TYPE_ICON_ROOM,
     CONF_PEER_ID,
-    CONF_ROOM_NUMBER
+    CONF_ROOM_NUMBER,
+    CONF_CONNECTION_TYPE,
+    CONNECTION_TYPE_CLOUD,
+    CONNECTION_TYPE_LOCAL,
 )
 from .pysdg import SDGPeerConnector, DeviReg, IconRoom
 
@@ -22,14 +25,34 @@ PRESET_MODES = {
     "economy": "Away",
     "manual": "Manual",
     "away": "Vacation",
-    "antifreeze": "Frost Protection"
+    "antifreeze": "Frost Protection",
 }
+
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
     """Set up the Danfoss climate entities."""
-    device = hass.data[DOMAIN][config_entry.entry_id]
-    
-    async_add_entities([DanfossClimate(hass, config_entry, device.name, device)], True)
+    data = hass.data[DOMAIN][config_entry.entry_id]
+    connection_type = config_entry.data.get(CONF_CONNECTION_TYPE, CONNECTION_TYPE_LOCAL)
+
+    entities = []
+    if connection_type == CONNECTION_TYPE_CLOUD:
+        devices_info = data["devices"]
+        for room in devices_info["rooms"]:
+            # This is a simplified representation. In a real implementation,
+            # you would create a proper device object for each room.
+            entities.append(
+                DanfossClimate(
+                    hass,
+                    config_entry,
+                    f"{devices_info['houseName']} {room['roomName']}",
+                    None,  # No device object for cloud yet
+                )
+            )
+    else:
+        device = data["device"]
+        entities.append(DanfossClimate(hass, config_entry, device.name, device))
+
+    async_add_entities(entities, True)
 
 class DanfossClimate(ClimateEntity):
     """Representation of a Danfoss Heating climate entity."""
@@ -53,8 +76,12 @@ class DanfossClimate(ClimateEntity):
     @property
     def unique_id(self):
         """Return a unique ID for this entity."""
-        return self._device.get_peer_id()
-        
+        if self._device:
+            return self._device.get_peer_id()
+        # For cloud devices, we need a different way to get a unique ID.
+        # Using the name for now, but this should be improved.
+        return self.name
+
     @property
     def name(self):
         """Return the name of the entity."""
@@ -107,8 +134,9 @@ class DanfossClimate(ClimateEntity):
             "floor_temperature": self._floor_temp,
             "window_open": self._window_open,
             "heating_on": self._heating_on,
-            "peer_id": self._device.get_peer_id()
         }
+        if self._device:
+            attrs["peer_id"] = self._device.get_peer_id()
         return attrs
         
     async def async_set_temperature(self, **kwargs):
@@ -132,15 +160,20 @@ class DanfossClimate(ClimateEntity):
         
     async def async_update(self):
         """Fetch new state data for the sensor."""
-        await self._device.update()
-        self._current_temp = self._device.get_current_temperature()
-        self._target_temp = self._device.get_target_temperature()
-        
-        if isinstance(self._device, DeviReg):
-            self._floor_temp = self._device.get_floor_temperature()
-            self._window_open = self._device.get_window_open()
-            self._heating_on = self._device.get_heating_on()
-            
-        self._hvac_mode = self._device.get_hvac_mode()
-        self._preset_mode = self._device.get_preset_mode()
-        _LOGGER.debug("Updated climate entity: %s", self.name)
+        if self._device:
+            await self._device.update()
+            self._current_temp = self._device.get_current_temperature()
+            self._target_temp = self._device.get_target_temperature()
+
+            if isinstance(self._device, DeviReg):
+                self._floor_temp = self._device.get_floor_temperature()
+                self._window_open = self._device.get_window_open()
+                self._heating_on = self._device.get_heating_on()
+
+            self._hvac_mode = self._device.get_hvac_mode()
+            self._preset_mode = self._device.get_preset_mode()
+            _LOGGER.debug("Updated climate entity: %s", self.name)
+        else:
+            # For cloud devices, we'll need to implement a different update mechanism.
+            # For now, we'll just log a message.
+            _LOGGER.debug("Update called for cloud device: %s", self.name)
