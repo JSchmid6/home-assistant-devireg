@@ -13,9 +13,10 @@ class DanfossCloudConnector:
     Handles the cloud-based 'Share house' functionality for Danfoss devices.
     """
 
-    def __init__(self, otp: str, user_name: str):
+    def __init__(self, otp: str, user_name: str, storage_path: str):
         self.otp = otp
         self.user_name = user_name
+        self.storage_path = storage_path
 
     async def get_devices(self) -> Optional[Dict[str, Any]]:
         """
@@ -25,7 +26,7 @@ class DanfossCloudConnector:
         _LOGGER.debug("Attempting to get devices from cloud with OTP")
 
         GridConnectionKeeper.add_user()
-        grid = GridConnectionKeeper.get_connection()
+        grid = GridConnectionKeeper.get_connection(self.storage_path)
 
         my_peer_id = grid.get_my_peer_id()
         if my_peer_id is None:

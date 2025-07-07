@@ -2,11 +2,12 @@
   "domain": "danfoss_heating",
   "name": "Danfoss Heating Solutions",
   "version": "1.0.0",
+  "requirements": ["cryptography"],
   "dependencies": [],
   "codeowners": ["@JSchmid6"],
   "config_flow": true,
   "documentation": "https://github.com/JSchmid6/home-assistant-devireg/blob/master/README.md",
   "issue_tracker": "https://github.com/JSchmid6/home-assistant-devireg/issues",
-  "iot_class": "local_polling",
+  "iot_class": "cloud_polling",
   "logo": "/api/danfoss_heating/logo.png"
 }

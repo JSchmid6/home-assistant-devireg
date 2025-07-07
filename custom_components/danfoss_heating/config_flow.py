@@ -79,7 +79,9 @@ class DanfossConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             otp = user_input[CONF_OTP]
             user_name = user_input["user_name"]
-            connector = DanfossCloudConnector(otp, user_name)
+            connector = DanfossCloudConnector(
+                otp, user_name, self.hass.config.path()
+            )
             try:
                 devices = await connector.get_devices()
 
