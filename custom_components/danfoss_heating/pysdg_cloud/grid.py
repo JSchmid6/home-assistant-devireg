@@ -38,8 +38,8 @@ class GridConnection:
         Returns the public key in the format required by the Danfoss cloud.
         """
         return self.public_key.public_bytes(
-            encoding=serialization.Encoding.Raw,
-            format=serialization.PublicFormat.Raw
+            encoding=serialization.Encoding.X962,
+            format=serialization.PublicFormat.UncompressedPoint
         ).hex()
 
 class GridConnectionKeeper:
