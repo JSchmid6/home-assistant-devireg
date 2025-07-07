@@ -5,9 +5,9 @@ from .grid import GridConnection
 
 _LOGGER = logging.getLogger(__name__)
 
-# The address of the Danfoss cloud server
-PEER_HOST = "jigsaw.trifork.com"
-PEER_PORT = 25500
+# The addresses of the Danfoss cloud servers
+PEER_HOSTS = ["77.66.11.90", "77.66.11.92", "5.179.92.180", "5.179.92.182"]
+PEER_PORT = 443
 
 
 class PeerConnection:
@@ -24,24 +24,32 @@ class PeerConnection:
         """
         Connects to the remote peer.
         """
-        try:
-            self._socket = ssl.create_default_context().wrap_socket(
-                socket.socket(socket.AF_INET, socket.SOCK_STREAM),
-                server_hostname=PEER_HOST,
-            )
-            self._socket.connect((PEER_HOST, PEER_PORT))
+        for host in PEER_HOSTS:
+            try:
+                self._socket = ssl.create_default_context().wrap_socket(
+                    socket.socket(socket.AF_INET, socket.SOCK_STREAM),
+                    server_hostname=host,
+                )
+                self._socket.connect((host, PEER_PORT))
 
-            # This is a simplified representation of the connection process.
-            # A real implementation would involve a more complex handshake.
-            client_hello = f"CONNECT {peer_id} {protocol}\n\n".encode()
-            self._socket.sendall(client_hello)
+                # This is a simplified representation of the connection process.
+                # A real implementation would involve a more complex handshake.
+                client_hello = f"CONNECT {peer_id} {protocol}\n\n".encode()
+                self._socket.sendall(client_hello)
 
-            response = self._socket.recv(1024)
-            # In a real implementation, we would parse the response
-            # to confirm the connection was successful.
+                response = self._socket.recv(1024)
+                # In a real implementation, we would parse the response
+                # to confirm the connection was successful.
 
-        except (socket.gaierror, ConnectionRefusedError, OSError) as e:
-            _LOGGER.error("Failed to connect to peer: %s", e)
+                return  # Success
+            except (socket.gaierror, ConnectionRefusedError, OSError) as e:
+                _LOGGER.warning("Failed to connect to peer %s: %s", host, e)
+            finally:
+                if self._socket:
+                    self._socket.close()
+                    self._socket = None
+
+        _LOGGER.error("Failed to connect to any peer server.")
 
     def send_data(self, data: bytes):
         """
