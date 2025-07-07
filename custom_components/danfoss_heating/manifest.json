@@ -2,7 +2,7 @@
   "domain": "danfoss_heating",
   "name": "Danfoss Heating Solutions",
   "version": "1.0.0",
-  "requirements": ["cryptography"],
+  "requirements": ["cryptography", "zeroconf"],
   "dependencies": [],
   "codeowners": ["@JSchmid6"],
   "config_flow": true,
